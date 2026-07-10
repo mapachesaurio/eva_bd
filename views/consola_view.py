@@ -22,7 +22,7 @@ def mostrar_titulo():
 
 def elegir_opcion():
     print(MENU)
-    return input("Elegí una opción: ").strip()
+    return input("Elige una opción: ").strip()
 
 
 def mensaje(texto):
@@ -44,7 +44,7 @@ def pedir_entero(etiqueta):
         try:
             return int(input(f"{etiqueta}: ").strip())
         except ValueError:
-            print("  * Ingresá un número entero.")
+            print("  * Ingresa un número entero.")
 
 
 def pedir_decimal(etiqueta):
@@ -52,7 +52,7 @@ def pedir_decimal(etiqueta):
         try:
             return float(input(f"{etiqueta}: ").strip())
         except ValueError:
-            print("  * Ingresá un número (se admiten decimales).")
+            print("  * Ingresa un número (se admiten decimales).")
 
 
 def pedir_estado(estados):
