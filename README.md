@@ -98,17 +98,23 @@ guarda como un documento y la colección queda llena de basura.
 
 ## Uso
 
-### Opción 1 - API web (FastAPI) con `main.py`
+### Opción 1 - Todo junto con `main.py`
 
 ```
 python main.py
 ```
 
-Verifica si la base ya fue poblada; si está vacía pregunta `¿Querés poblar la base de datos?
-(si/no)` (respuesta validada, solo `si` o `no`) y luego levanta el servidor uvicorn en
-http://127.0.0.1:8000.
+Hace tres cosas, en orden:
 
-También se puede levantar el servidor directamente (sin el chequeo de seed):
+1. Verifica si la base ya fue poblada; si está vacía pregunta `¿Querés poblar la base de datos?
+   (si/no)` (respuesta validada, solo `si` o `no`).
+2. Levanta el servidor web (uvicorn) en http://127.0.0.1:8000 dentro de un hilo de fondo.
+3. Abre el menú de consola en la terminal, en paralelo al servidor.
+
+Así la API y el menú corren al mismo tiempo sobre la misma base MongoDB. Al salir del menú
+(opción `0`) también se cierra el servidor.
+
+También se puede levantar solo el servidor (sin menú ni chequeo de seed), con recarga automática:
 
 ```
 uvicorn views.viaje_view:app --reload

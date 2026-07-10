@@ -2,12 +2,17 @@
 # Punto de entrada de la aplicación.
 # 1. Verifica si la base de datos ya fue poblada. Si no, pregunta si se desea
 #    poblarla (respuesta validada: solo "si" o "no").
-# 2. Levanta el servidor web con uvicorn sirviendo la API FastAPI.
+# 2. Levanta el servidor web (uvicorn) en un hilo de fondo.
+# 3. Corre el menú de consola en el hilo principal, en paralelo al servidor.
 # Ejecutar con: python main.py  (MongoDB tiene que estar corriendo)
+
+import threading
 
 import uvicorn
 
 from config.database import get_collection
+from controllers.consola_controller import iniciar_app
+from views.viaje_view import app
 import seed
 
 
@@ -26,7 +31,7 @@ def _preguntar_si_no(pregunta):
 
 
 def _verificar_seed():
-    """Si la base no fue poblada, ofrece poblarla antes de arrancar el server."""
+    """Si la base no fue poblada, ofrece poblarla antes de arrancar."""
     if _base_poblada():
         print("[MAIN] La base de datos ya tiene datos, se omite el seed.")
         return
@@ -37,7 +42,20 @@ def _verificar_seed():
         print("[MAIN] Se continúa sin poblar la base de datos.")
 
 
+def _iniciar_servidor():
+    """Arranca uvicorn. Sin reload: corre en un hilo secundario, donde el
+    recargador de uvicorn no puede manejar señales del sistema."""
+    uvicorn.run(app, host="127.0.0.1", port=8000, log_level="warning")
+
+
 if __name__ == "__main__":
     _verificar_seed()
-    print("[MAIN] Iniciando servidor uvicorn en http://127.0.0.1:8000 ...")
-    uvicorn.run("views.viaje_view:app", host="127.0.0.1", port=8000, reload=True)
+
+    # El servidor corre en un hilo daemon: se cierra solo cuando el menú
+    # (hilo principal) termina, así no queda un proceso colgado.
+    hilo_servidor = threading.Thread(target=_iniciar_servidor, daemon=True)
+    hilo_servidor.start()
+    print("[MAIN] Servidor uvicorn corriendo en http://127.0.0.1:8000/docs")
+
+    # El menú de consola corre en primer plano, en paralelo al servidor.
+    iniciar_app()
