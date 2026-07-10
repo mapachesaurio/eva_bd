@@ -82,12 +82,15 @@ El archivo `.env` tiene tres variables:
 
 ## Preparar la base de datos
 
-Con MongoDB corriendo, y una sola vez, crear la colección y cargar los datos de ejemplo:
+Con MongoDB corriendo, y una sola vez, crear la colección con su validador e índices:
 
 ```
 mongosh "mongodb://localhost:27017" scripts/crear_esquema.js   # colección con validador e índices
-python seed.py                                                 # 3 viajes de ejemplo
 ```
+
+No es necesario ejecutar `python seed.py` a mano: al arrancar con `python main.py`, si la base
+está vacía se pregunta `¿Querés poblar la base de datos? (si/no)` y, respondiendo `si`, se cargan
+los 3 viajes de ejemplo automáticamente. `seed.py` sigue disponible por si se quiere poblar aparte.
 
 Importante: `crear_esquema.js` se ejecuta con `mongosh`, como arriba. No se importa con
 `mongoimport` ni se pega como documento en Compass; si se hace eso, cada línea del archivo se
@@ -95,16 +98,17 @@ guarda como un documento y la colección queda llena de basura.
 
 ## Uso
 
-### Opción 1 - App de consola
+### Opción 1 - API web (FastAPI) con `main.py`
 
 ```
 python main.py
 ```
 
-Abre un menú en la terminal para listar, ver, crear, actualizar y eliminar viajes. Aplica las
-mismas reglas de negocio que la API y escribe en la misma base MongoDB.
+Verifica si la base ya fue poblada; si está vacía pregunta `¿Querés poblar la base de datos?
+(si/no)` (respuesta validada, solo `si` o `no`) y luego levanta el servidor uvicorn en
+http://127.0.0.1:8000.
 
-### Opción 2 - API web (FastAPI)
+También se puede levantar el servidor directamente (sin el chequeo de seed):
 
 ```
 uvicorn views.viaje_view:app --reload
