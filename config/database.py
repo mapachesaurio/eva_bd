@@ -22,10 +22,9 @@ MONGO_COLL = os.getenv("MONGO_COLL", "viajes_monitoreo")
 cliente = None
 
 
-def get_collection():
-    """Devuelve la colección viajes_monitoreo para usarla en los modelos.
-    La primera vez que se llama, abre la conexión y hace un ping para
-    comprobar que la base de datos responde."""
+def _get_cliente():
+    """Abre la conexión (una sola vez) y comprueba que la base responde con
+    un ping. Reutiliza el mismo cliente en toda la aplicación."""
     global cliente
     if cliente is None:
         try:
@@ -41,4 +40,16 @@ def get_collection():
         except OperationFailure:
             print("ERROR: usuario o contraseña incorrectos (revisar archivo .env)")
             raise
-    return cliente[MONGO_DB][MONGO_COLL]
+    return cliente
+
+
+def get_db():
+    """Devuelve la base de datos logitrack_global (para tareas de esquema/índices)."""
+    return _get_cliente()[MONGO_DB]
+
+
+def get_collection():
+    """Devuelve la colección viajes_monitoreo para usarla en los modelos.
+    La primera vez que se llama, abre la conexión y hace un ping para
+    comprobar que la base de datos responde."""
+    return _get_cliente()[MONGO_DB][MONGO_COLL]

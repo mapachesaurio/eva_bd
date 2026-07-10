@@ -82,15 +82,21 @@ El archivo `.env` tiene tres variables:
 
 ## Preparar la base de datos
 
-Con MongoDB corriendo, y una sola vez, crear la colección con su validador e índices:
+No hace falta preparar nada a mano: al arrancar con `python main.py` se crea automáticamente la
+colección con su validador estricto e índices (si todavía no existen) y, si la base está vacía, se
+pregunta `¿Querés poblar la base de datos? (si/no)` y, respondiendo `si`, se cargan los 3 viajes de
+ejemplo. Es idempotente: correrlo de nuevo no duplica nada.
+
+Alternativa manual / a nivel DBMS (opcional). El mismo esquema está disponible como script de
+`mongosh` y el seed como script suelto:
 
 ```
 mongosh "mongodb://localhost:27017" scripts/crear_esquema.js   # colección con validador e índices
+python seed.py                                                 # 3 viajes de ejemplo
 ```
 
-No es necesario ejecutar `python seed.py` a mano: al arrancar con `python main.py`, si la base
-está vacía se pregunta `¿Querés poblar la base de datos? (si/no)` y, respondiendo `si`, se cargan
-los 3 viajes de ejemplo automáticamente. `seed.py` sigue disponible por si se quiere poblar aparte.
+Nota: `scripts/crear_esquema.js` y `config/esquema.py` definen el mismo esquema; si se cambia uno,
+mantener el otro sincronizado.
 
 Importante: `crear_esquema.js` se ejecuta con `mongosh`, como arriba. No se importa con
 `mongoimport` ni se pega como documento en Compass; si se hace eso, cada línea del archivo se

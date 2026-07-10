@@ -5,6 +5,10 @@
 // (requisitos G.7 y G.8) y los índices de rendimiento para alta demanda.
 //
 // Uso:  mongosh "mongodb://localhost:27017" scripts/crear_esquema.js
+//
+// NOTA: este esquema está replicado en Python en config/esquema.py, que main.py
+// ejecuta automáticamente al arrancar. Ambos definen la MISMA estructura y deben
+// mantenerse sincronizados: si se cambia uno, actualizar el otro.
 
 db = db.getSiblingDB("logitrack_global");
 

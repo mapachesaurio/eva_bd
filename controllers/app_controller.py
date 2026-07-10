@@ -10,6 +10,7 @@ import threading
 import uvicorn
 
 from config.database import get_collection
+from config.esquema import inicializar_esquema
 from controllers.consola_controller import iniciar_app
 from views.viaje_view import app
 import seed
@@ -48,7 +49,10 @@ def _iniciar_servidor():
 
 
 def iniciar_sistema():
-    """Punto de arranque: seed opcional, servidor web y menú en paralelo."""
+    """Punto de arranque: esquema, seed opcional, servidor web y menú en paralelo."""
+    # Primero el esquema: la colección/validador/índices deben existir antes de
+    # que el seed inserte, para que el validador aplique a los datos de ejemplo.
+    inicializar_esquema()
     _verificar_seed()
 
     # El servidor corre en un hilo daemon: se cierra solo cuando el menú
