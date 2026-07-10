@@ -84,8 +84,8 @@ El archivo `.env` tiene tres variables:
 
 No hace falta preparar nada a mano: al arrancar con `python main.py` se crea automáticamente la
 colección con su validador estricto e índices (si todavía no existen) y, si la base está vacía, se
-pregunta `¿Querés poblar la base de datos? (si/no)` y, respondiendo `si`, se cargan los 3 viajes de
-ejemplo. Es idempotente: correrlo de nuevo no duplica nada.
+pregunta `¿Desea poblar la base de datos? (si/no)` y, respondiendo `si`, se cargan los 3 viajes de
+ejemplo. Es idempotente: ejecutarlo de nuevo no duplica nada.
 
 Alternativa manual / a nivel DBMS (opcional). El mismo esquema está disponible como script de
 `mongosh` y el seed como script suelto:
@@ -95,8 +95,8 @@ mongosh "mongodb://localhost:27017" scripts/crear_esquema.js   # colección con 
 python seed.py                                                 # 3 viajes de ejemplo
 ```
 
-Nota: `scripts/crear_esquema.js` y `config/esquema.py` definen el mismo esquema; si se cambia uno,
-mantener el otro sincronizado.
+El esquema (validador e índices) se define una sola vez en `config/esquema.json`; tanto
+`scripts/crear_esquema.js` como `config/esquema.py` lo leen de ahí.
 
 Importante: `crear_esquema.js` se ejecuta con `mongosh`, como arriba. No se importa con
 `mongoimport` ni se pega como documento en Compass; si se hace eso, cada línea del archivo se
@@ -112,7 +112,7 @@ python main.py
 
 Hace tres cosas, en orden:
 
-1. Verifica si la base ya fue poblada; si está vacía pregunta `¿Querés poblar la base de datos?
+1. Verifica si la base ya fue poblada; si está vacía pregunta `¿Desea poblar la base de datos?
    (si/no)` (respuesta validada, solo `si` o `no`).
 2. Levanta el servidor web (uvicorn) en http://127.0.0.1:8000 dentro de un hilo de fondo.
 3. Abre el menú de consola en la terminal, en paralelo al servidor.

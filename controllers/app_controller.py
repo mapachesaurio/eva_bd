@@ -3,7 +3,7 @@
 #   1. Verifica si la base de datos fue poblada y, si no, ofrece poblarla.
 #   2. Levanta el servidor web (uvicorn) en un hilo de fondo.
 #   3. Corre el menú de consola en el hilo principal, en paralelo al servidor.
-# main.py solo llama a iniciar_sistema(): toda la lógica vive acá.
+# main.py solo llama a iniciar_sistema(): toda la logica vive aqui.
 
 import threading
 
@@ -27,7 +27,7 @@ def _preguntar_si_no(pregunta):
         respuesta = input(f"{pregunta} (si/no): ").strip().lower()
         if respuesta in ("si", "no"):
             return respuesta == "si"
-        print("Respuesta inválida. Escribí 'si' o 'no'.")
+        print("Respuesta invalida. Escriba 'si' o 'no'.")
 
 
 def _verificar_seed():
@@ -36,7 +36,7 @@ def _verificar_seed():
         print("[MAIN] La base de datos ya tiene datos, se omite el seed.")
         return
     print("[MAIN] La base de datos está vacía.")
-    if _preguntar_si_no("¿Querés poblar la base de datos?"):
+    if _preguntar_si_no("¿Desea poblar la base de datos?"):
         seed.main()
     else:
         print("[MAIN] Se continúa sin poblar la base de datos.")
