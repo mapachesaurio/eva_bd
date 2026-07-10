@@ -1,4 +1,4 @@
-# LogiTrack_Global - MVP de Monitoreo de Flotas e IoT (MongoDB + Python MVC)
+# LogiTrack_Global - MVP de Monitoreo de Flotas e IoT (MongoDB + Python Modelo Vista Controlador)
 
 Backend del MVP de la plataforma de monitoreo de flotas LogiTrack_Global
 (Evaluación 6, Unidad 4, Bases de Datos No Estructuradas, TI3032).
