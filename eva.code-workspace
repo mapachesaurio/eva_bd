@@ -1,0 +1,23 @@
+{
+	"folders": [
+		{
+			"path": "../../eva"
+		},
+		{
+			"path": "../../../Downloads/logitrack_mvp/logitrack_mvp/scripts"
+		},
+		{
+			"path": "../../../Downloads/logitrack_mvp/logitrack_mvp/{models,controllers,scripts,docs}"
+		},
+		{
+			"path": "../../../Downloads/logitrack_mvp/logitrack_mvp/controllers"
+		},
+		{
+			"path": "../../../Downloads/logitrack_mvp/logitrack_mvp/docs"
+		},
+		{
+			"path": "../../../Downloads/logitrack_mvp/logitrack_mvp/models"
+		}
+	],
+	"settings": {}
+}

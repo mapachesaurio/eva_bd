@@ -1,0 +1,37 @@
+=== 1. SEED: cargar datos de prueba ===
+[SEED] Insertado viaje RT-GLOBAL-2026-99A
+[SEED] Insertado viaje RT-GLOBAL-2026-77B
+[SEED] Insertado viaje RT-GLOBAL-2026-55C
+[SEED] Proceso finalizado. Documentos nuevos: 3
+
+=== 2. READ: GET /viajes ===
+HTTP 200 - 3 viajes en la colección
+
+=== 3. READ: GET /viajes/RT-GLOBAL-2026-99A ===
+HTTP 200 - conductor: Juan Pérez, lecturas IoT: 2
+
+=== 4. CREATE: POST /viajes (viaje nuevo) ===
+HTTP 201 - {'id': '6a4f7465495ae25978d60d48', 'codigo_ruta': 'RT-GLOBAL-2026-11D'}
+
+=== 5. CREATE con código repetido (debe rechazarlo) ===
+HTTP 400 - Ya existe un viaje con el código RT-GLOBAL-2026-11D
+
+=== 6. UPDATE: POST telemetría ($push en el arreglo) ===
+HTTP 200 - lecturas IoT después del $push: 1
+
+=== 7. UPDATE: telemetría con velocidad imposible (debe rechazarla) ===
+HTTP 400 - Velocidad fuera de rango: 450.0 km/h
+
+=== 8. UPDATE: PATCH estado a EN_TRANSITO ===
+HTTP 200 - {'codigo_ruta': 'RT-GLOBAL-2026-11D', 'estado_viaje': 'EN_TRANSITO'}
+
+=== 9. UPDATE: agregar capacitación al conductor ===
+HTTP 200 - {'codigo_ruta': 'RT-GLOBAL-2026-11D', 'capacitacion_agregada': {'centro_educativo': 'LogiTrack Academy', 'ano': 2026, 'certificacion_obtenida': 'Manejo Defensivo Internacional'}}
+
+=== 10. DELETE: eliminar el viaje ===
+HTTP 200 - {'codigo_ruta': 'RT-GLOBAL-2026-11D', 'eliminado': True}
+
+=== 11. READ después del DELETE (debe dar 404) ===
+HTTP 404 - No existe el viaje RT-GLOBAL-2026-11D
+
+*** Todas las pruebas CRUD se ejecutaron correctamente ***
